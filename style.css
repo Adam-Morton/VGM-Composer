@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+  --primary-color: #0026a0;
+  --primary-dark: #001533;
+  --bg-color: #f9f9f9;
+  --text-color: #111;
+  --subtext-color: #555;
+  --card-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  --btn-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+/* Base Styles */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h2, h3 {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--primary-color);
+}
+
+p {
+  color: var(--subtext-color);
+}
+
+/* Container for max width */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  background-color: transparent; /* transparent so wrapper shows */
+}
+
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: #f2f2f2; /* the "true" background color */
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+#site-header {
+	position: sticky;
+	top: 20px;
+	z-index: 1000;
+	width: 100%;
+	border-radius: 4px;
+
+	/* Semi-transparent background */
+	background-color: rgba(255, 255, 255, 0.2);
+
+	/* Blur effect */
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px); /* for Safari support */
+
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Inner Container */
+#site-header .container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 1rem 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	box-sizing: border-box;
+		text-align: left;
+
+}
+
+/* Logo */
+#site-header .logo {
+	height: 40px;
+	display: block;
+}
+
+/* Navigation */
+#site-header nav {
+	display: flex;
+	gap: 1.5rem;
+}
+
+#site-header nav a {
+	font-weight: 500;
+	text-decoration: none;
+	color: var(--text-color);
+}
+
+#site-header nav a:hover {
+	color: var(--primary-color);
+}
+
+/* ===========================
+   HEADER RESPONSIVE MENU
+=========================== */
+.menu-toggle {
+	display: none;
+	font-size: 1.8rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+@media (max-width: 768px) {
+	#site-header .container {
+		flex-wrap: wrap;
+	}
+
+	.menu-toggle {
+		display: block;
+		margin-left: auto;
+	}
+
+	#site-header nav {
+		width: 100%;
+		display: none;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid #eee;
+		background-color: transparent; /* transparent */
+	}
+
+	#site-header nav.active {
+		display: flex;
+	}
+}
+
+/* =========================================
+   HERO SECTION
+========================================= */
+section.hero {
+  text-align: center;
+  padding: 4rem 1rem 3rem;
+  background: transparent; /* removed gradient */
+}
+
+section.hero h1 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+section.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+section.hero .btn {
+  display: inline-block;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: var(--btn-shadow);
+  text-decoration: none;
+}
+
+section.hero .btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* =========================================
+   SECTIONS
+========================================= */
+#welcome,
+#project-details,
+#music-section,
+#testimonials {
+  margin: 2rem auto;
+  background-color: transparent; /* ensure transparent */
+}
+
+#welcome img,
+#music-section img,
+#project-details img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem; /* space between items */
+  margin-top: 1rem;
+}
+
+.project {
+  text-align: center;
+}
+
+.project img {
+  max-width: 100%;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto 1rem;
+}
+
+.project h3 {
+  margin: 0;
+}
+
+  /* Custom audio player styling */
+  .custom-audio-player {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1rem 0;
+    user-select: none;
+    flex-wrap: wrap;
+  }
+  .custom-audio-player button {
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .custom-audio-player input[type=range] {
+    cursor: pointer;
+  }
+  #progress {
+    width: 150px;
+  }
+  #volume {
+    width: 100px;
+  }
+  .timestamp {
+    font-family: monospace;
+    font-size: 0.9rem;
+    min-width: 80px;
+    text-align: center;
+  }
+
+
+/* =========================================
+   BUTTONS (GLOBAL)
+========================================= */
+.btn {
+  display: inline-block;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: var(--btn-shadow);
+  text-decoration: none;
+  margin-top: 1rem;
+}
+
+.btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+footer {
+  text-align: center;
+  padding: 2rem;
+  background: transparent; /* removed white */
+  border-top: 1px solid #eee;
+  color: #666;
+}

@@ -1,0 +1,58 @@
+{
+  "hero": {
+    "title": "ADAM MORTON MUSIC",
+    "subtitle": "Crafting immersive soundscapes for gaming.",
+    "cta": { "text": "FREE MUSIC PACK", "link": "#" }
+  },
+  "welcome": {
+    "image": "images/profile.jpg",
+    "title": "WELCOME",
+    "text": [
+      "I'm Adam Morton, a musician with over 15 years of experience.",
+      "Playing games is one of my favourite hobbies.",
+      "If you're a game developer, let's connect!"
+    ],
+    "cta": { "text": "DEMO REEL", "link": "#" }
+  },
+  "projects": [
+    {
+      "title": "Moto Knight",
+      "description": "Composed heavy metal music for the main theme and menu.",
+      "cta": {
+        "text": "Play on Steam",
+        "link": "https://store.steampowered.com/app/2796920/Moto_Knight/"
+      }
+    },
+    {
+      "title": "Live Die Repair",
+      "description": "Created and implemented all audio assets using Wwise and Unity.",
+      "cta": {
+        "text": "Play on Itch.io",
+        "link": "https://jazparsons.itch.io/live-die-repair"
+      }
+    },
+    {
+      "title": "Saving Astral",
+      "description": "Created and implemented all audio assets for this rougelike space shooter using Wwise and Unity.",
+      "cta": {
+        "text": "Play the Demo",
+        "link": "https://store.steampowered.com/app/2576990/Saving_Astral/"
+      }
+    }
+  ],
+  "musicPacks": [
+    {
+      "title": "Everything Music Collection",
+      "description": "100 loopable tracks totaling over 3 hours of music.",
+      "image": "images/collection.jpg",
+      "cta": { "text": "MORE INFO", "link": "#" }
+    }
+  ],
+  "testimonials": [
+    {
+      "author": "Alex Kleynhans",
+      "role": "Director // Silver Stallion Productions",
+      "text": "Adam is an absolute professional and a brilliant collaborator..."
+    }
+  ]
+}
