@@ -7,100 +7,41 @@
 <link rel="stylesheet" href="/style.css" />
 </head>
 <style>
-  .custom-audio-player {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1rem 0;
-    background: #333;
-    padding: 0.75rem 0rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgb(0 0 0 / 0.6);
-    color: #eee;
-    user-select: none;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  body {
+	position: relative;
+	min-height: 100vh;
+	overflow-x: hidden;
+  }  
 
-  .custom-audio-player button {
-    background: #444;
-    border: none;
-    border-radius: 50%;
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    color: #eee;
+  body::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1; /* behind all content */
+	background: var(--page-bg) center/cover no-repeat;
+	filter: blur(30px) brightness(0.8); /* blur + dim for readability */
+	opacity: 0.7; /* semi-transparent */
+	<!-- transition: background 0.3s ease; /* smooth transition if image changes */ -->
   }
-  .custom-audio-player button:hover {
-    background: #66aaff;
-    color: #fff;
-  }
+  
+#site-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* center child footer horizontally */
+}
 
-  .custom-audio-player button svg {
-    width: 22px;
-    height: 22px;
-    fill: currentColor;
-  }
+#site-footer footer {
+  text-align: center;
+}
 
-  input[type=range] {
-    -webkit-appearance: none;
-    width: 130px;
-    height: 6px;
-    background: #444;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  input[type=range]:hover {
-    background: #66aaff;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 14px;
-    height: 14px;
-    background: #66aaff;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    transition: background-color 0.3s ease;
-  }
-  input[type=range]:hover::-webkit-slider-thumb {
-    background: #3399ff;
-  }
-  input[type=range]::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
-    background: #66aaff;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    transition: background-color 0.3s ease;
-  }
-  input[type=range]:hover::-moz-range-thumb {
-    background: #3399ff;
-  }
 
-  #volume {
-    width: 100px;
-  }
-
-  .timestamp {
-    font-family: monospace;
-    font-size: 0.85rem;
-    color: #bbb;
-    min-width: 85px;
-    text-align: center;
-  }
 </style>
-<body>
 
+<body>
+<div class="page-wrapper">
 <header id="site-header"></header>
 
 <section class="hero" id="hero"></section>
@@ -341,6 +282,11 @@ async function init() {
 
   const data = await fetchJSON('/data.json');
   const project = data.projects.find(p => (p.slug || p.title.toLowerCase().replace(/\s+/g,'-')) === projectSlug);
+  
+    // Inside init() after finding the project
+  const heroImage = project.image || `../${projectSlug}/cover.png`;
+  document.body.style.setProperty('--page-bg', `url('${heroImage}')`);
+
 
   if (!project) {
     document.getElementById('project-details').innerHTML =
@@ -354,6 +300,6 @@ async function init() {
 
 init();
 </script>
-
+</div>
 </body>
 </html>
