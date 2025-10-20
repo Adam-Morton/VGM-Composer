@@ -37,7 +37,6 @@
   text-align: center;
 }
 
-
 </style>
 
 <body>
@@ -52,254 +51,239 @@
 <div id="site-footer"></div>
 
 <script>
-// --- Helpers ---
 async function loadHTML(id, url) {
-  const res = await fetch(url);
-  document.getElementById(id).innerHTML = await res.text();
+	const res = await fetch(url);
+	const html = await res.text();
+	const container = document.getElementById(id);
+	container.innerHTML = html;
+
+	// Re-run any <script> tags in the loaded HTML
+	container.querySelectorAll("script").forEach(oldScript => {
+		const newScript = document.createElement("script");
+		if (oldScript.src) {
+			newScript.src = oldScript.src;
+		} else {
+			newScript.textContent = oldScript.textContent;
+		}
+		document.body.appendChild(newScript);
+		oldScript.remove();
+	});
 }
 
 async function fetchJSON(url) {
-  const res = await fetch(url);
-  return await res.json();
+	const res = await fetch(url);
+	return await res.json();
 }
 
-// Format seconds as mm:ss
 function formatTime(seconds) {
-  if (isNaN(seconds)) return '0:00';
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
+	if (isNaN(seconds)) return '0:00';
+	const m = Math.floor(seconds / 60);
+	const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+	return `${m}:${s}`;
 }
 
-// --- Custom Audio Player Setup ---
+/* ----------------------------------------
+   Hamburger Menu Init
+---------------------------------------- */
+function initHamburger() {
+	const menuToggle = document.querySelector('.menu-toggle');
+	const nav = document.querySelector('nav');
+	if (!menuToggle || !nav) return;
+
+	menuToggle.addEventListener('click', () => {
+		nav.classList.toggle('active');
+	});
+}
+/* ----------------------------------------
+   Custom Audio Player
+---------------------------------------- */
 function setupCustomAudioPlayer(audioPath) {
-  const container = document.createElement('div');
-  container.className = 'custom-audio-player';
+	const container = document.createElement('div');
+	container.className = 'custom-audio-player';
 
-  // SVG icons for play/pause and mute/unmute
-  const playIcon = `
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M8 5v14l11-7z"/>
-    </svg>`;
-  const pauseIcon = `
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M6 19h4V5H6zm8-14v14h4V5z"/>
-    </svg>`;
-  const volumeOnIcon = `
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M3 9v6h4l5 5V4L7 9H3z"/>
-      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.06c1.48-.74 2.5-2.26 2.5-4.03z"/>
-    </svg>`;
-  const volumeMuteIcon = `
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.06c1.48-.74 2.5-2.26 2.5-4.03z" fill="none"/>
-      <path d="M19 12c0 3.87-3.13 7-7 7v2c5.52 0 10-4.48 10-10h-2zM3 9v6h4l5 5V4L7 9H3z" fill="none"/>
-      <line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2"/>
-    </svg>`;
+	const playIcon = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+	const pauseIcon = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>`;
+	const volumeOnIcon = `<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.06c1.48-.74 2.5-2.26 2.5-4.03z"/></svg>`;
+	const volumeMuteIcon = `<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2"/></svg>`;
 
-  container.innerHTML = `
-    <button id="play-pause" aria-label="Play/Pause">${playIcon}</button>
-    <input type="range" id="progress" value="0" min="0" max="100" step="1" aria-label="Progress Bar" />
-    <span class="timestamp" id="timestamp">0:00 / 0:00</span>
-    <button id="mute-unmute" aria-label="Mute/Unmute">${volumeOnIcon}</button>
-    <input type="range" id="volume" value="100" min="0" max="100" step="1" aria-label="Volume Control" />
-    <audio id="audio" src="${audioPath}" loop preload="metadata"></audio>
-  `;
+	container.innerHTML = `
+		<button id="play-pause">${playIcon}</button>
+		<input type="range" id="progress" value="0" min="0" max="100" step="1" />
+		<span class="timestamp" id="timestamp">0:00 / 0:00</span>
+		<button id="mute-unmute">${volumeOnIcon}</button>
+		<input type="range" id="volume" value="100" min="0" max="100" step="1" />
+		<audio id="audio" src="${audioPath}" loop preload="metadata"></audio>
+	`;
 
-  const audio = container.querySelector('#audio');
-  const playPauseBtn = container.querySelector('#play-pause');
-  const progress = container.querySelector('#progress');
-  const volume = container.querySelector('#volume');
-  const muteUnmuteBtn = container.querySelector('#mute-unmute');
-  const timestamp = container.querySelector('#timestamp');
+	const audio = container.querySelector('#audio');
+	const playPauseBtn = container.querySelector('#play-pause');
+	const progress = container.querySelector('#progress');
+	const volume = container.querySelector('#volume');
+	const muteUnmuteBtn = container.querySelector('#mute-unmute');
+	const timestamp = container.querySelector('#timestamp');
 
-  function updatePlayButton() {
-    if (audio.paused) {
-      playPauseBtn.innerHTML = playIcon;
-    } else {
-      playPauseBtn.innerHTML = pauseIcon;
-    }
-  }
+	function updatePlayButton() {
+		playPauseBtn.innerHTML = audio.paused ? playIcon : pauseIcon;
+	}
 
-  function updateMuteButton() {
-    if (audio.muted || audio.volume === 0) {
-      muteUnmuteBtn.innerHTML = volumeMuteIcon;
-    } else {
-      muteUnmuteBtn.innerHTML = volumeOnIcon;
-    }
-  }
+	function updateMuteButton() {
+		muteUnmuteBtn.innerHTML = audio.muted || audio.volume === 0 ? volumeMuteIcon : volumeOnIcon;
+	}
 
-  // Play / Pause toggle
-  playPauseBtn.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play();
-    } else {
-      audio.pause();
-    }
-    updatePlayButton();
-  });
+	playPauseBtn.addEventListener('click', () => {
+		audio.paused ? audio.play() : audio.pause();
+		updatePlayButton();
+	});
 
-  // Update progress bar and timestamp as audio plays
-  audio.addEventListener('timeupdate', () => {
-    if (audio.duration) {
-      progress.value = (audio.currentTime / audio.duration) * 100;
-      timestamp.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-    }
-  });
+	audio.addEventListener('timeupdate', () => {
+		if (audio.duration) {
+			progress.value = (audio.currentTime / audio.duration) * 100;
+			timestamp.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+		}
+	});
 
-  // When metadata loaded, update timestamp total duration
-  audio.addEventListener('loadedmetadata', () => {
-    timestamp.textContent = `${formatTime(0)} / ${formatTime(audio.duration)}`;
-  });
+	audio.addEventListener('loadedmetadata', () => {
+		timestamp.textContent = `${formatTime(0)} / ${formatTime(audio.duration)}`;
+	});
 
-  // Seek audio when progress bar changes
-  progress.addEventListener('input', () => {
-    if (audio.duration) {
-      audio.currentTime = (progress.value / 100) * audio.duration;
-    }
-  });
+	progress.addEventListener('input', () => {
+		if (audio.duration) audio.currentTime = (progress.value / 100) * audio.duration;
+	});
 
-  // Volume control
-  volume.addEventListener('input', () => {
-    audio.volume = volume.value / 100;
-    audio.muted = audio.volume === 0;
-    updateMuteButton();
-  });
+	volume.addEventListener('input', () => {
+		audio.volume = volume.value / 100;
+		audio.muted = audio.volume === 0;
+		updateMuteButton();
+	});
 
-  // Mute / Unmute toggle
-  muteUnmuteBtn.addEventListener('click', () => {
-    audio.muted = !audio.muted;
-    if (audio.muted) {
-      volume.value = 0;
-    } else {
-      volume.value = audio.volume * 100 || 100;
-    }
-    updateMuteButton();
-  });
+	muteUnmuteBtn.addEventListener('click', () => {
+		audio.muted = !audio.muted;
+		updateMuteButton();
+	});
 
-  // Update play button if audio ends (though loop is forced)
-  audio.addEventListener('ended', () => {
-    updatePlayButton();
-  });
+	updatePlayButton();
+	updateMuteButton();
 
-  // Initialize buttons state
-  updatePlayButton();
-  updateMuteButton();
-
-  return container;
+	return container;
 }
 
-// --- Render Functions ---
-function renderHero(project, projectSlug) {
-  const hero = document.getElementById('hero');
-  hero.innerHTML = `
-    <div style="text-align:center; margin:1rem 0;">
-      <h1>${project.title}</h1>
-      ${project.description ? `<p>${project.description}</p>` : ''}
-      ${
-        (() => {
-          const ctaLink = project.cta?.link || project.link;
-          const ctaText = project.cta?.text || 'Visit Project';
-          return ctaLink
-            ? `<a href="${ctaLink}" class="btn">${ctaText}</a>`
-            : '';
-        })()
-      }
-    </div>
-  `;
+/* ----------------------------------------
+   Render Functions
+---------------------------------------- */
+function renderHero(project) {
+	const hero = document.getElementById('hero');
+	hero.innerHTML = `
+		<div style="text-align:center; margin:1rem 0;">
+			<h1>${project.title}</h1>
+			${project.description ? `<p>${project.description}</p>` : ''}
+			${project.cta?.link ? `<a href="${project.cta.link}" class="btn">${project.cta.text || 'Visit Project'}</a>` : ''}
+		</div>
+	`;
 }
 
 function renderProjectDetails(project, projectSlug) {
-  const container = document.getElementById('project-details');
-  let html = '';
+	const container = document.getElementById('project-details');
+	const folder = `../${projectSlug}/`;
+	const mainImage = project.image || `${folder}cover.png`;
 
-  const folder = `../${projectSlug}/`;
-  const mainImage = project.image || `${folder}cover.png`;
-  html += `<img src="${mainImage}" alt="${project.title}" style="max-width:600px; width:100%; display:block; margin: 1rem auto;">`;
+	let html = `
+		<img src="${mainImage}" alt="${project.title}" style="max-width:600px; width:100%; display:block; margin: 1rem auto;">
+		<div id="custom-audio-container" style="text-align:center;"></div>
+	`;
 
-  // Placeholder div for the custom audio player
-  html += `<div id="custom-audio-container" style="text-align:center;"></div>`;
+	if (project.details) {
+		const d = project.details;
+		html += `<div style="text-align:center; margin-top:1.5rem;">`;
+		if (d.summary) html += `<p>${d.summary}</p>`;
+		if (d.tech) html += `<p><strong>Tech:</strong> ${d.tech.join(', ')}</p>`;
+		if (d.date) html += `<p><strong>Date:</strong> ${d.date}</p>`;
+		if (d.role) html += `<p><strong>Role:</strong> ${d.role}</p>`;
+		if (d.client) html += `<p><strong>Client:</strong> ${d.client}</p>`;
+		html += `</div>`;
+	}
 
-  // Extended details
-  if (project.details) {
-    const d = project.details;
-    html += '<div style="text-align:center; margin-top:1.5rem;">';
-    if (d.summary) html += `<p>${d.summary}</p>`;
-    if (d.tech) html += `<p><strong>Tech:</strong> ${d.tech.join(', ')}</p>`;
-    if (d.date) html += `<p><strong>Date:</strong> ${d.date}</p>`;
-    if (d.role) html += `<p><strong>Role:</strong> ${d.role}</p>`;
-    if (d.client) html += `<p><strong>Client:</strong> ${d.client}</p>`;
-    html += '</div>';
-  }
+	if (project.gallery?.length) {
+		html += `<div class="project-gallery">`;
+		project.gallery.forEach(img => {
+			html += `<img src="../${img}" alt="${project.title}">`;
+		});
+		html += `</div>`;
+	}
 
-  if (project.gallery && project.gallery.length > 0) {
-    html += '<div class="project-gallery">';
-    project.gallery.forEach(img => {
-      html += `<img src="../${img}" alt="${project.title}">`;
-    });
-    html += '</div>';
-  }
+	if (project.video) {
+		html += `
+			<div class="responsive-video">
+				<iframe src="${project.video}" frameborder="0" allowfullscreen></iframe>
+			</div>
+		`;
+	}
 
-  if (project.video) {
-    html += `
-      <div class="responsive-video">
-        <iframe src="${project.video}" frameborder="0" allowfullscreen></iframe>
-      </div>
-    `;
-  }
+	html += `
+		<div style="text-align:center; margin-top:2rem;">
+			<a href="/" class="btn">Back to Home</a>
+		</div>
+	`;
 
-  // Back to Home button moved here
-  html += `<div style="text-align:center; margin-top:2rem;">
-             <a href="/" class="btn">Back to Home</a>
-           </div>`;
+	if (project.testimonials?.length) {
+		html += `<div style="margin-top:2rem; text-align:center;"><h2>Testimonials</h2>`;
+		project.testimonials.forEach(t => {
+			html += `<p><strong>${t.author} // ${t.role}</strong></p><p><em>"${t.text}"</em></p>`;
+		});
+		html += `</div>`;
+	}
 
-  if (project.testimonials && project.testimonials.length > 0) {
-    html += '<div style="margin-top:2rem; text-align:center;">';
-    html += '<h2>Testimonials</h2>';
-    project.testimonials.forEach(t => {
-      html += `<p><strong>${t.author} // ${t.role}</strong></p>
-               <p><em>"${t.text}"</em></p>`;
-    });
-    html += '</div>';
-  }
+	container.innerHTML = html;
 
-  container.innerHTML = html;
-
-  // Insert custom audio player
-  const audioPath = project.audio || `${folder}audio.wav`;
-  const audioContainer = document.getElementById('custom-audio-container');
-  const customPlayer = setupCustomAudioPlayer(audioPath);
-  audioContainer.appendChild(customPlayer);
+	const audioPath = project.audio || `${folder}audio.wav`;
+	const audioContainer = document.getElementById('custom-audio-container');
+	audioContainer.appendChild(setupCustomAudioPlayer(audioPath));
 }
 
-// --- Main ---
+/* ----------------------------------------
+   Init
+---------------------------------------- */
 async function init() {
-  await loadHTML('site-header', '/header.html');
-  await loadHTML('site-footer', '/footer.html');
+	// 1️⃣ Load header and footer
+	await loadHTML('site-header', '/header.html');
+	await loadHTML('site-footer', '/footer.html');
 
-  const params = new URLSearchParams(window.location.search);
-  const projectSlug = params.get('name') || window.location.pathname.split('/').filter(Boolean).pop();
+	// ✅ Now the header is in the DOM, initialize hamburger
+	const menuToggle = document.querySelector('.menu-toggle');
+	const nav = document.querySelector('nav');
 
-  const data = await fetchJSON('/data.json');
-  const project = data.projects.find(p => (p.slug || p.title.toLowerCase().replace(/\s+/g,'-')) === projectSlug);
+	if (menuToggle && nav) {
+		menuToggle.addEventListener('click', () => {
+			nav.classList.toggle('open'); // matches your CSS
+		});
+	}
   
-    // Inside init() after finding the project
-  const heroImage = project.image || `../${projectSlug}/cover.png`;
-  document.body.style.setProperty('--page-bg', `url('${heroImage}')`);
+	// 2️⃣ Determine current project
+	const params = new URLSearchParams(window.location.search);
+	const projectSlug = params.get('name') || window.location.pathname.split('/').filter(Boolean).pop();
 
+	// 3️⃣ Load project data
+	const data = await fetchJSON('/data.json');
+	const project = data.projects.find(p => (p.slug || p.title.toLowerCase().replace(/\s+/g,'-')) === projectSlug);
 
-  if (!project) {
-    document.getElementById('project-details').innerHTML =
-      '<p style="text-align:center;">Project not found. <a href="/" class="btn">Back to home</a></p>';
-    return;
-  }
+	if (!project) {
+		document.getElementById('project-details').innerHTML =
+			'<p style="text-align:center;">Project not found. <a href="/" class="btn">Back to home</a></p>';
+		return;
+	}
 
-  renderHero(project, projectSlug);
-  renderProjectDetails(project, projectSlug);
+	// 4️⃣ Set blurred background
+	const heroImage = project.image || `../${projectSlug}/cover.png`;
+	document.body.style.setProperty('--page-bg', `url('${heroImage}')`);
+
+	// 5️⃣ Render hero and project details
+	renderHero(project, projectSlug);
+	renderProjectDetails(project, projectSlug);
 }
+
 
 init();
 </script>
+
 </div>
 </body>
 </html>

@@ -1,134 +1,135 @@
+/* =========================================
+   GOOGLE FONTS
+========================================= */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;600&display=swap');
 
+/* =========================================
+   ROOT VARIABLES
+========================================= */
 :root {
-  --primary-color: #0026a0;
-  --primary-dark: #001533;
-  --bg-image: url('background.jpg');
-  --text-color: #111;
-  --subtext-color: #555;
-  --card-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  --btn-shadow: 0 6px 15px rgba(0,0,0,0.12);
+	--primary-color: #0026a0;
+	--primary-dark: #001533;
+	--bg-image: url('background.jpg');
+	--text-color: #111;
+	--subtext-color: #2b2b2b;
+	--card-shadow: 0 6px 20px rgba(0,0,0,0.08);
+	--btn-shadow: 0 6px 15px rgba(0,0,0,0.12);
 }
 
+/* =========================================
+   BASE STYLES
+========================================= */
 html, body {
-  height: 100%;
-}
-
-body {
-  position: relative;
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  color: var(--text-color);
-  line-height: 1.6;
-  overflow-x: hidden;
+	height: 100%;
+	margin: 0;
+	font-family: 'Inter', sans-serif;
+	color: var(--text-color);
+	line-height: 1.6;
+	overflow-x: hidden;
+	position: relative;
 }
 
 body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: var(--bg-image) center/cover no-repeat;
-  opacity: 0.3;
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	background: var(--bg-image) center/cover no-repeat;
+	opacity: 0.3;
 }
 
-
 h2, h3 {
-  font-family: 'Rajdhani', sans-serif;
-  color: var(--primary-color);
+	font-family: 'Rajdhani', sans-serif;
+	color: var(--primary-color);
 }
 
 p {
-  color: var(--subtext-color);
+	color: var(--subtext-color);
 }
 
-/* Container for max width */
+/* =========================================
+   CONTAINERS
+========================================= */
 .container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 1rem;
-  box-sizing: border-box;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 1rem;
+	box-sizing: border-box;
 }
 
 .page-wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 1rem;
-  box-sizing: border-box;
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-  background: transparent;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 1rem;
+	box-sizing: border-box;
+	min-height: 100vh;
+	position: relative;
+	overflow: hidden;
+	background: transparent;
 }
 
 .page-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0; 
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background: linear-gradient(
-    to right, 
-    rgba(255, 255, 255, 0) 0%,       /* fully transparent on the left */
-    rgba(255, 255, 255, .6) 35%,    /* semi-transparent white in the center */
-    rgba(255, 255, 255, .6) 65%,    /* semi-transparent white in the center */
-    rgba(255, 255, 255, 0) 100%      /* fully transparent on the right */
-  );
-  z-index: 0; /* ensure it's behind content */
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	background: linear-gradient(
+		to right,
+		rgba(255,255,255,0) 0%,
+		rgba(255,255,255,0.6) 35%,
+		rgba(255,255,255,0.6) 65%,
+		rgba(255,255,255,0) 100%
+	);
+	z-index: 0;
 }
 
-/* Make all direct children of page-wrapper appear above overlay */
 .page-wrapper > * {
-  position: relative;
-  z-index: 1;
+	position: relative;
+	z-index: 1;
 }
 
 /* =========================================
    HEADER
 ========================================= */
 #site-header {
-	position: sticky;
+	position: fixed;
 	top: 20px;
-	z-index: 1000;
+	left: 0;
 	width: 100%;
-	border-radius: 4px;
-
-	/* Semi-transparent background */
-	background-color: rgba(255, 255, 255, 0.2);
-
-	/* Blur effect */
-	backdrop-filter: blur(6px);
-	-webkit-backdrop-filter: blur(6px); /* for Safari support */
-
-	border-bottom: 1px solid rgba(0,0,0,0.1);
-	box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	pointer-events: none;
 }
 
-/* Inner Container */
 #site-header .container {
 	max-width: 1100px;
-	margin: 0 auto;
+	width: 100%;
+	margin: 0 1rem;
 	padding: 1rem 2rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	box-sizing: border-box;
-		text-align: left;
-
+	background-color: rgba(255,255,255,0.2);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+	pointer-events: all;
 }
 
-/* Logo */
 #site-header .logo {
 	height: 40px;
 	display: block;
 }
 
-/* Navigation */
 #site-header nav {
 	display: flex;
 	gap: 1.5rem;
@@ -144,40 +145,69 @@ p {
 	color: var(--primary-color);
 }
 
-/* ===========================
-   HEADER RESPONSIVE MENU
-=========================== */
+/* Mobile menu toggle */
 .menu-toggle {
 	display: none;
 	font-size: 1.8rem;
 	background: none;
 	border: none;
 	cursor: pointer;
+	color: var(--text-color);
 }
 
+/* =========================================
+   HEADER MOBILE
+========================================= */
 @media (max-width: 768px) {
 	#site-header .container {
 		flex-wrap: wrap;
+		position: relative;
 	}
 
 	.menu-toggle {
 		display: block;
 		margin-left: auto;
+		z-index: 1100;
 	}
 
 	#site-header nav {
-		width: 100%;
-		display: none;
+		position: fixed;       /* make it fixed relative to viewport */
+		top: 70px;             /* adjust to sit below header */
+		right: 0;
+		left: 0;               /* full width */
+		width: auto;
+		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
+		padding: 1rem 2rem;
 		gap: 1rem;
-		padding-top: 1rem;
-		border-top: 1px solid #eee;
-		background-color: transparent; /* transparent */
+
+		background-color: rgba(255, 255, 255, .9); /* lower alpha so blur shows */
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+		border-radius: 0 0 8px 8px;
+
+		transform: translateY(-10px);
+		opacity: 0;
+		pointer-events: none;
+		transition: all 0.35s ease;
+
+		z-index: 1100; /* above everything else */
 	}
 
-	#site-header nav.active {
-		display: flex;
+	#site-header nav.open {
+		transform: translateY(0);
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	#site-header nav a {
+		width: 100%;
+		padding: 0.5rem 0;
+		text-align: right;
+		color: var(--text-color);
 	}
 }
 
@@ -185,39 +215,39 @@ p {
    HERO SECTION
 ========================================= */
 section.hero {
-  text-align: center;
-  padding: 4rem 1rem 3rem;
-  background: transparent; /* removed gradient */
+	text-align: center;
+	padding: 4rem 1rem 3rem;
+	background: transparent;
 }
 
 section.hero h1 {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 3rem;
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-  letter-spacing: 1px;
+	font-family: 'Rajdhani', sans-serif;
+	font-size: 3rem;
+	color: var(--primary-color);
+	margin-bottom: 1rem;
+	letter-spacing: 1px;
 }
 
 section.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+	font-size: 1.2rem;
+	margin-bottom: 2rem;
 }
 
 section.hero .btn {
-  display: inline-block;
-  background: var(--primary-color);
-  color: #fff;
-  padding: 1rem 2rem;
-  font-weight: 600;
-  border-radius: 8px;
-  box-shadow: var(--btn-shadow);
-  text-decoration: none;
+	display: inline-block;
+	background: var(--primary-color);
+	color: #fff;
+	padding: 1rem 2rem;
+	font-weight: 600;
+	border-radius: 8px;
+	box-shadow: var(--btn-shadow);
+	text-decoration: none;
 }
 
 section.hero .btn:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+	background: var(--primary-dark);
+	transform: translateY(-2px);
+	box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
 /* =========================================
@@ -227,79 +257,79 @@ section.hero .btn:hover {
 #project-details,
 #music-section,
 #testimonials {
-  margin: 2rem auto;
-  background-color: transparent; /* ensure transparent */
+	margin: 2rem auto;
+	background-color: transparent;
 }
 
 #welcome img,
 #music-section img,
 #project-details img {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 8px;
-  box-shadow: var(--card-shadow);
+	width: 100%;
+	max-width: 400px;
+	border-radius: 8px;
+	box-shadow: var(--card-shadow);
 }
 
 .project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem; /* space between items */
-  margin-top: 1rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 2rem;
+	margin-top: 1rem;
 }
 
 .project {
-  text-align: center;
+	text-align: center;
 }
 
 .project img {
-  max-width: 100%;
-  border-radius: 8px;
-  display: block;
-  margin: 0 auto 1rem;
+	max-width: 100%;
+	border-radius: 8px;
+	display: block;
+	margin: 0 auto 1rem;
 }
 
 .project h3 {
-  margin: 0;
+	margin: 0;
 }
 
-
 /* =========================================
-   BUTTONS (GLOBAL)
+   BUTTONS
 ========================================= */
 .btn {
-  display: inline-block;
-  background: var(--primary-color);
-  color: #fff;
-  padding: 1rem 2rem;
-  font-weight: 600;
-  border-radius: 8px;
-  box-shadow: var(--btn-shadow);
-  text-decoration: none;
-  margin-top: 1rem;
+	display: inline-block;
+	background: var(--primary-color);
+	color: #fff;
+	padding: 1rem 2rem;
+	font-weight: 600;
+	border-radius: 8px;
+	box-shadow: var(--btn-shadow);
+	text-decoration: none;
+	margin-top: 1rem;
 }
 
 .btn:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+	background: var(--primary-dark);
+	transform: translateY(-2px);
+	box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
+/* =========================================
+   AUDIO PLAYER
+========================================= */
 .custom-audio-player {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	gap: 1rem;
-	margin: 1rem 0;
+	margin: 1rem auto;
+	padding: 0.75rem 0;
+	max-width: 600px;
 	background: #f9f9f9;
-	padding: 0.75rem 0rem;
 	border-radius: 12px;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	border: 1px solid #ddd;
+	box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 	color: #333;
 	user-select: none;
-	max-width: 600px;
-	margin-left: auto;
-	margin-right: auto;
-	border: 1px solid #ddd;
 }
 
 .custom-audio-player button {
@@ -312,12 +342,12 @@ section.hero .btn:hover {
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 	color: #333;
+	transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .custom-audio-player button:hover {
-	background: #cce0ff; /* light accent tint */
+	background: #cce0ff;
 	border-color: var(--primary-color);
 	color: var(--primary-color);
 }
@@ -328,48 +358,54 @@ section.hero .btn:hover {
 	fill: currentColor;
 }
 
+/* Slider */
 input[type=range] {
 	-webkit-appearance: none;
+	-moz-appearance: none;
 	width: 130px;
 	height: 6px;
-	background: #e6f0ff; /* light primary tint for track */
+	background: #e6f0ff;
 	border-radius: 3px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 }
 
 input[type=range]:hover {
-	background: #cce0ff; /* slightly stronger accent tint */
+	background: #cce0ff;
 }
 
+/* WebKit (Chrome, Safari) */
 input[type=range]::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	appearance: none;
 	width: 14px;
 	height: 14px;
-	background: var(--primary-color); /* main blue */
-	cursor: pointer;
+	background: var(--primary-color);
 	border-radius: 50%;
 	border: 2px solid #fff;
-	box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	box-shadow: 0 0 3px rgba(0,0,0,0.2);
 	transition: background-color 0.3s ease;
 }
 
+/* WebKit hover */
 input[type=range]:hover::-webkit-slider-thumb {
-	background: var(--primary-dark); /* darker blue on hover */
+	background: var(--primary-dark);
 }
 
+/* Mozilla Firefox */
 input[type=range]::-moz-range-thumb {
 	width: 14px;
 	height: 14px;
 	background: var(--primary-color);
-	cursor: pointer;
 	border-radius: 50%;
 	border: 2px solid #fff;
-	box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	box-shadow: 0 0 3px rgba(0,0,0,0.2);
 	transition: background-color 0.3s ease;
 }
 
+/* Mozilla hover */
 input[type=range]:hover::-moz-range-thumb {
 	background: var(--primary-dark);
 }
@@ -387,12 +423,45 @@ input[type=range]:hover::-moz-range-thumb {
 }
 
 /* =========================================
+   AUDIO PLAYER MOBILE
+========================================= */
+@media (max-width: 600px) {
+	.custom-audio-player {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.5rem;
+		padding: 1rem;
+		max-width: 90%;
+	}
+
+	.custom-audio-player button {
+		width: 50px;
+		height: 50px;
+		margin: 0 auto;
+	}
+
+	input[type=range] {
+		width: 100%;
+	}
+
+	.timestamp {
+		font-size: 0.8rem;
+		min-width: unset;
+	}
+
+	#volume {
+		width: 100%;
+	}
+}
+
+
+/* =========================================
    FOOTER
 ========================================= */
 footer {
-  text-align: center;
-  padding: 2rem;
-  background: transparent; /* removed white */
-  border-top: 1px solid #eee;
-  color: #666;
+	text-align: center;
+	padding: 2rem;
+	background: transparent;
+	border-top: 1px solid #eee;
+	color: #666;
 }

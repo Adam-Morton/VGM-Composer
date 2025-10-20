@@ -121,6 +121,15 @@ async function init() {
 	await loadHTML('site-header', '/header.html');
 	await loadHTML('site-footer', '/footer.html');
 
+	// ✅ Move the mobile menu setup here — after header loads
+	const toggle = document.querySelector('.menu-toggle');
+	const nav = document.querySelector('#site-header nav');
+	if (toggle && nav) {
+		toggle.addEventListener('click', () => {
+			nav.classList.toggle('open');
+		});
+	}
+
 	const res = await fetch('data.json');
 	const data = await res.json();
 
@@ -129,17 +138,12 @@ async function init() {
 	renderProjects(data.projects);
 	renderMusicPacks(data.musicPacks);
 	renderTestimonials(data.testimonials);
-
-	const toggle = document.querySelector('.menu-toggle');
-	const nav = document.querySelector('#site-header nav');
-	if (toggle && nav) {
-		toggle.addEventListener('click', () => {
-			nav.classList.toggle('active');
-		});
-	}
 }
 
+
 init();
+
+
 </script>
 </div>
 </body>
