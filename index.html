@@ -6,16 +6,20 @@
 <title>Adam Morton Music</title>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="logo.png" type="image/png">
-
 </head>
 <body>
 <div class="page-wrapper">
+
+<!-- HEADER -->
 <header id="site-header"></header>
 
+<!-- HERO SECTION -->
 <section class="hero" id="hero"></section>
 
+<!-- WELCOME SECTION -->
 <section class="welcome" id="welcome"></section>
 
+<!-- PROJECTS SECTION -->
 <section class="projects" id="projects">
   <div class="container">
     <h2>RECENT PROJECTS</h2>
@@ -23,19 +27,22 @@
   </div>
 </section>
 
+<!-- MUSIC SECTION -->
 <section class="music-section" id="music-section"></section>
+
+<!-- TESTIMONIALS SECTION -->
 <section class="testimonials" id="testimonials"></section>
 
+<!-- FOOTER -->
 <footer id="site-footer"></footer>
 
+<!-- SCRIPTS -->
 <script>
-/* Load HTML dynamically into an element */
 async function loadHTML(id, url) {
 	const res = await fetch(url);
 	document.getElementById(id).innerHTML = await res.text();
 }
 
-/* Render functions */
 function renderHero(hero) {
 	const container = document.getElementById('hero');
 	container.innerHTML = `
@@ -62,22 +69,20 @@ function renderWelcome(welcome) {
 }
 
 function renderProjects(projects) {
-  const grid = document.getElementById('project-grid');
-  grid.innerHTML = projects.map(p => {
-    const slug = p.slug || p.title.toLowerCase().replace(/\s+/g, '-');
-    const image = p.image || `../${slug}/cover.png`;
-
-    return `
-      <div class="project" style="text-align:center; margin-bottom:2rem;">
-        <a href="/${slug}/" style="text-decoration:none; color:inherit;">
-          <img src="${image}" alt="${p.title}" style="max-width:300px; width:100%; border-radius:8px;">
-          <h3>${p.title}</h3>
-        </a>
-      </div>
-    `;
-  }).join('');
+	const grid = document.getElementById('project-grid');
+	grid.innerHTML = projects.map(p => {
+		const slug = p.slug || p.title.toLowerCase().replace(/\s+/g, '-');
+		const image = p.image || `projects/${slug}/cover.png`;
+		return `
+			<div class="project" style="text-align:center; margin-bottom:2rem;">
+				<a href="projects/${slug}/" style="text-decoration:none; color:inherit;">
+					<img src="${image}" alt="${p.title}" style="max-width:300px; width:100%; border-radius:8px;">
+					<h3>${p.title}</h3>
+				</a>
+			</div>
+		`;
+	}).join('');
 }
-
 
 function renderMusicPacks(musicPacks) {
 	const container = document.getElementById('music-section');
@@ -112,7 +117,6 @@ function renderTestimonials(testimonials) {
 	`;
 }
 
-/* Initialize the page */
 async function init() {
 	await loadHTML('site-header', '/header.html');
 	await loadHTML('site-footer', '/footer.html');
@@ -126,7 +130,6 @@ async function init() {
 	renderMusicPacks(data.musicPacks);
 	renderTestimonials(data.testimonials);
 
-	// ✅ Attach the hamburger menu logic AFTER header loads
 	const toggle = document.querySelector('.menu-toggle');
 	const nav = document.querySelector('#site-header nav');
 	if (toggle && nav) {

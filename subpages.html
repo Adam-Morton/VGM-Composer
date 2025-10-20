@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Project</title>
-<link rel="stylesheet" href="../style.css" />
+<link rel="stylesheet" href="/style.css" />
 </head>
 <style>
   .custom-audio-player {
@@ -309,7 +309,7 @@ function renderProjectDetails(project, projectSlug) {
 
   // Back to Home button moved here
   html += `<div style="text-align:center; margin-top:2rem;">
-             <a href="../index.html" class="btn">Back to Home</a>
+             <a href="/" class="btn">Back to Home</a>
            </div>`;
 
   if (project.testimonials && project.testimonials.length > 0) {
@@ -339,12 +339,12 @@ async function init() {
   const params = new URLSearchParams(window.location.search);
   const projectSlug = params.get('name') || window.location.pathname.split('/').filter(Boolean).pop();
 
-  const data = await fetchJSON('../data.json');
+  const data = await fetchJSON('/data.json');
   const project = data.projects.find(p => (p.slug || p.title.toLowerCase().replace(/\s+/g,'-')) === projectSlug);
 
   if (!project) {
     document.getElementById('project-details').innerHTML =
-      '<p style="text-align:center;">Project not found. <a href="../index.html" class="btn">Back to home</a></p>';
+      '<p style="text-align:center;">Project not found. <a href="/" class="btn">Back to home</a></p>';
     return;
   }
 
