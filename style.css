@@ -130,9 +130,10 @@ p {
 	display: block;
 }
 
-#site-header nav {
+#site-header nav-inner {
 	display: flex;
 	gap: 1.5rem;
+
 }
 
 #site-header nav a {
@@ -171,36 +172,31 @@ p {
 	}
 
 	#site-header nav {
-		position: fixed;       /* make it fixed relative to viewport */
-		top: 70px;             /* adjust to sit below header */
+		position: fixed;      
+		top: 91px;             
 		right: 0;
-		left: 0;               /* full width */
+		left: 0;            
 		width: auto;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-		padding: 1rem 2rem;
 		gap: 1rem;
 
-		background-color: rgba(255, 255, 255, .9); /* lower alpha so blur shows */
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+		/* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); */
 		border-radius: 0 0 8px 8px;
 
-		transform: translateY(-10px);
 		opacity: 0;
 		pointer-events: none;
-		transition: all 0.35s ease;
 
-		z-index: 1100; /* above everything else */
+		z-index: 1100; 
 	}
 
 	#site-header nav.open {
 		transform: translateY(0);
 		opacity: 1;
 		pointer-events: auto;
+		box-shadow: none;
+
 	}
 
 	#site-header nav a {
@@ -208,6 +204,8 @@ p {
 		padding: 0.5rem 0;
 		text-align: right;
 		color: var(--text-color);
+		box-shadow: none;
+
 	}
 }
 

@@ -42,7 +42,6 @@
 <body>
 <div class="page-wrapper">
 <header id="site-header"></header>
-
 <section class="hero" id="hero"></section>
 <section id="project-details">
   <p style="text-align:center;">Loading project...</p>
@@ -282,6 +281,15 @@ async function init() {
 
 
 init();
+
+// mobile menu toggle
+const menuToggle = document.querySelector('.menu-toggle');
+const nav = document.querySelector('#site-header nav');
+
+menuToggle.addEventListener('click', () => {
+	nav.classList.toggle('open');
+});
+
 </script>
 
 </div>
